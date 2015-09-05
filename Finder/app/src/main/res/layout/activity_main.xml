@@ -16,7 +16,8 @@
     android:id="@+id/buttons"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:layout_marginTop="20dp">
 
     <FrameLayout
         android:layout_width="0dp"
@@ -25,8 +26,9 @@
     </FrameLayout>
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/finderx"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:background="@drawable/finderx"/>
 
     <FrameLayout
@@ -36,8 +38,9 @@
     </FrameLayout>
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/finderheart"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:background="@drawable/finderheart"/>
 
     <FrameLayout

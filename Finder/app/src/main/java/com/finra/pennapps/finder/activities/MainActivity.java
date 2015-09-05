@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ public class MainActivity extends ActionBarActivity{
     public static final String TAG = "MainActivity";
     private ArrayList<String> al;
     private ArrayAdapter<String> arrayAdapter;
+    private ImageView finderx, finderheart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,16 +38,34 @@ public class MainActivity extends ActionBarActivity{
         Parse.initialize(this, "P5T1msrll0rI1C7wxkRRv7vFdtQCA9fHgXzw3Pac", "l5HvJ3oMhd4OsJcMVxYtGyWRMGpywVsPcOdVfjkz");
         setContentView(R.layout.activity_main);
 
-        SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.container);
+
+
+        final SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.container);
 
         al = new ArrayList<String>();
-        al.add("php");
-        al.add("c");
-        al.add("python");
-        al.add("java");
+        al.add("Justin Ho");
+        al.add("Anish Khattar");
+        al.add("Taylor Swift");
+        al.add("Justin Bieber");
 
         //choose your favorite adapter
         arrayAdapter = new CardAdapter(this,  al );
+
+        finderx = (ImageView) findViewById(R.id.finderx);
+        finderheart = (ImageView) findViewById(R.id.finderheart);
+        finderx.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flingContainer.getTopCardListener().selectLeft();
+            }
+        });
+        finderheart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: Store financial advisor
+                flingContainer.getTopCardListener().selectRight();
+            }
+        });
 
         //set the listener and the adapter
         flingContainer.setAdapter(arrayAdapter);
@@ -83,18 +103,7 @@ public class MainActivity extends ActionBarActivity{
             }
         });
 
-        /*TextView textview = (TextView) findViewById(R.id.textview);
-        textview.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()) {
-            @Override
-            public void onSwipeLeft() {
-                Log.d(TAG, "Swiped left");
-            }
 
-            @Override
-            public void onSwipeRight() {
-                Log.d(TAG, "Swiped right");
-            }
-        });*/
     }
 
 
