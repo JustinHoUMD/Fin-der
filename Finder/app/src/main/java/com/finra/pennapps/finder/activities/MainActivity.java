@@ -1,17 +1,37 @@
-package com.finra.pennapps.finder;
+package com.finra.pennapps.finder.activities;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import com.finra.pennapps.finder.R;
+import com.finra.pennapps.finder.ui.OnSwipeTouchListener;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity{
+
+    public static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /*TextView textview = (TextView) findViewById(R.id.textview);
+        textview.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()) {
+            @Override
+            public void onSwipeLeft() {
+                Log.d(TAG, "Swiped left");
+            }
+
+            @Override
+            public void onSwipeRight() {
+                Log.d(TAG, "Swiped right");
+            }
+        });*/
     }
 
 
