@@ -1,6 +1,8 @@
 package com.finra.pennapps.finder.activities;
 
 import android.content.Context;
+import android.content.Intent;
+import android.location.Location;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +17,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.finra.pennapps.finder.R;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 import com.parse.Parse;
 
@@ -22,12 +28,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends ActionBarActivity{
+public class MainActivity extends ActionBarActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
 
     public static final String TAG = "MainActivity";
     private ArrayList<String> al;
     private ArrayAdapter<String> arrayAdapter;
     private ImageView finderx, finderheart;
+    private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +43,8 @@ public class MainActivity extends ActionBarActivity{
         Parse.enableLocalDatastore(this);
 
         Parse.initialize(this, "P5T1msrll0rI1C7wxkRRv7vFdtQCA9fHgXzw3Pac", "l5HvJ3oMhd4OsJcMVxYtGyWRMGpywVsPcOdVfjkz");
+        buildGoogleApiClient();
+        mGoogleApiClient.connect();
         setContentView(R.layout.activity_main);
 
 
@@ -122,11 +131,42 @@ public class MainActivity extends ActionBarActivity{
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_listadvisors) {
+            //Go to ListActivity
+            Intent intent = new Intent(this, AdvisorActivity.class);
+            startActivity(intent);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        Log.d(TAG,"Connected");
+        //Get user's last known location
+        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+        LatLng lastLocation = new LatLng(mLastLocation.getLatitude(),mLastLocation.getLongitude());
+        Log.d(TAG,"Lat: "+lastLocation.latitude+" Lng: "+lastLocation.longitude);
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.d(TAG,"Connection failed");
     }
 
     private class CardAdapter extends ArrayAdapter {

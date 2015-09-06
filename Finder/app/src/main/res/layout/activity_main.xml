@@ -8,6 +8,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="400dp"
+        android:layout_marginLeft="10dp" android:layout_marginTop="10dp" android:layout_marginRight="10dp"
         app:rotation_degrees="16"
         app:max_visible="4"
         app:min_adapter_stack="6" />
