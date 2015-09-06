@@ -16,8 +16,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:textSize="40sp"
+        android:textSize="35sp"
         android:id="@+id/name"
+        android:textColor="@color/black"
         android:layout_gravity="center_horizontal"
         android:text="John Doe"/>
 
@@ -43,13 +44,15 @@
             android:background="@drawable/redcircle"
             android:gravity="center"
             android:text="0"
-            android:textSize="30sp"/>
+            android:textSize="30sp"
+            android:textColor="@color/black"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Exams Passed"/>
+            android:text="Exams Passed"
+            android:textColor="@color/black"/>
 
 
 
@@ -72,13 +75,15 @@
             android:background="@drawable/redcircle"
             android:gravity="center"
             android:text="0"
-            android:textSize="30sp"/>
+            android:textSize="30sp"
+            android:textColor="@color/black"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="Yrs Experience"/>
+                android:text="Yrs Experience"
+                android:textColor="@color/black"/>
 
          </LinearLayout>
 
