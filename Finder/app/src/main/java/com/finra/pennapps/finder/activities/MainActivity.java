@@ -106,6 +106,22 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.C
 
             @Override
             public void onLeftCardExit(Object dataObject) {
+                // Decrement UserRating
+                final String id = ((ParseObject)dataObject).getObjectId();
+                //Increment UserRating
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("FinraAdvisors");
+                // Retrieve the object by id
+                query.getInBackground(id, new GetCallback<ParseObject>() {
+                    public void done(ParseObject advisor, ParseException e) {
+                        if (e == null) {
+                            if (advisor.get("UserRating") != null) {
+                                advisor.increment("UserRating", -1);
+                            } else {
+                                advisor.put("UserRating", -1);
+                            }
+                        }
+                    }
+                });
                 //Do something on the left!
                 //You also have access to the original object.
                 //If you want to use it just cast it (String) dataObject
@@ -114,12 +130,30 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.C
 
             @Override
             public void onRightCardExit(Object dataObject) {
+                final String id = ((ParseObject)dataObject).getObjectId();
+                //Increment UserRating
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("FinraAdvisors");
+                // Retrieve the object by id
+                query.getInBackground(id, new GetCallback<ParseObject>() {
+                    public void done(ParseObject advisor, ParseException e) {
+                        if (e == null) {
+                            if (advisor.get("UserRating") != null) {
+                                advisor.increment("UserRating");
+                            } else {
+                                advisor.put("UserRating", 1);
+                            }
+                        }
+                    }
+                });
+
+
+
                 Toast.makeText(MainActivity.this, "Right!", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "dataObject: "+dataObject.toString());
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
                 String uid = prefs.getString("uid", "");
                 Log.d(TAG, "existing uid: "+uid);
-                final String id = ((ParseObject)dataObject).getObjectId();
+
                 if (uid.isEmpty()) {
                     Log.d(TAG,"uid is empty");
                     final ParseObject user = new ParseObject("User");
@@ -141,8 +175,8 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.C
 
                 } else {
                     Log.d(TAG,"already have uid");
-                    ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
-                    query.getInBackground(uid, new GetCallback<ParseObject>() {
+                    ParseQuery<ParseObject> query2 = ParseQuery.getQuery("User");
+                    query2.getInBackground(uid, new GetCallback<ParseObject>() {
                         public void done(ParseObject user, ParseException e) {
                             if (e == null) {
                                 user.addAllUnique("advisors", Arrays.asList(id));
@@ -274,6 +308,8 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.C
             TextView name = (TextView) cardView.findViewById(R.id.name);
             TextView examsPassed = (TextView) cardView.findViewById(R.id.exams_passed);
             TextView yearsExp = (TextView) cardView.findViewById(R.id.yearsExp);
+            TextView company = (TextView) cardView.findViewById(R.id.company);
+            TextView drpsTextView = (TextView) cardView.findViewById(R.id.drps);
             try {
                 // Name
                 JSONObject info = s.getJSONObject("Info");
@@ -313,7 +349,15 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.C
                         }
                     }
                 }
-                Log.d(TAG, drpList.toString());
+                String drpsString = "";
+                for(String drp:drpList){
+                    drpsString = drpsString+" "+drp;
+                }
+                if (drpsString.isEmpty()) {
+                    drpsString = "None";
+                }
+                drpsString.replace("@","");
+                drpsTextView.setText("DRPs: "+drpsString);
 
                 //Years Exp
                 int exp = 0;
@@ -365,6 +409,16 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.C
 
                 }
                 yearsExp.setText(String.valueOf(exp));
+
+                String companyName = "";
+                JSONObject currReg = s.getJSONObject("CrntEmps");
+                if (currReg != null) {
+                    JSONObject currReg2 = currReg.getJSONObject("CrntEmp");
+                    if (currReg2 != null) {
+                        companyName = currReg2.getString("@orgNm");
+                    }
+                }
+                company.setText(capitalize(companyName));
 
             } catch (JSONException e) {
                 e.printStackTrace();
