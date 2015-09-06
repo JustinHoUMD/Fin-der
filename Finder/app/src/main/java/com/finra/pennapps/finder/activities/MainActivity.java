@@ -116,8 +116,10 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.C
                         if (e == null) {
                             if (advisor.get("UserRating") != null) {
                                 advisor.increment("UserRating", -1);
+                                advisor.saveInBackground();
                             } else {
                                 advisor.put("UserRating", -1);
+                                advisor.saveInBackground();
                             }
                         }
                     }
@@ -125,7 +127,7 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.C
                 //Do something on the left!
                 //You also have access to the original object.
                 //If you want to use it just cast it (String) dataObject
-                Toast.makeText(MainActivity.this, "Left!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "Left!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -139,16 +141,19 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.C
                         if (e == null) {
                             if (advisor.get("UserRating") != null) {
                                 advisor.increment("UserRating");
+                                advisor.saveInBackground();
                             } else {
                                 advisor.put("UserRating", 1);
+                                advisor.saveInBackground();
                             }
                         }
+
                     }
                 });
 
 
 
-                Toast.makeText(MainActivity.this, "Right!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "Right!", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "dataObject: "+dataObject.toString());
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
                 String uid = prefs.getString("uid", "");
@@ -356,7 +361,7 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.C
                 if (drpsString.isEmpty()) {
                     drpsString = "None";
                 }
-                drpsString.replace("@","");
+                drpsString = drpsString.replaceAll("@","");
                 drpsTextView.setText("DRPs: "+drpsString);
 
                 //Years Exp
